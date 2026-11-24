@@ -1,0 +1,50 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Aplikasi SMART RT 02 
+      uses: name: Build Web to APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Convert Website to APK
+        uses: s0h3ck/website-to-apk-action@v1.0.0
+        with:
+          app_name: 'Aplikasi SMART Rt 02'
+          package_name: 'com.domain.aplikasi'
+          website_dir: '.'
+
+      - name: SMART RT 02
+        uses: https://script.google.com/macros/s/AKfycbxdyLeMjTwpa1SvLuwvHA2adjYRUMw757Rq8w7NidGDfqr20Eyrf_jG_XL1N1H6A8JfzQ/exec
+        with:
+          name: SMART RT 02
+          path: '**/*.apk'
+
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
